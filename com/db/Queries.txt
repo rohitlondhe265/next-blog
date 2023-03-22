@@ -1,0 +1,83 @@
+// one to many relationship
+
+SELECT m.key, m.content  FROM post p INNER JOIN post_metadata m ON m.postId = p.id  WHERE p.slug = 'slug-test'
+
+// many to many relationship query
+
+SELECT t.title as "tags of the given post"
+from post p
+INNER JOIN post_tag pt ON p.id = pt.postId
+INNER JOIN tag t ON pt.tagId = t.id
+WHERE p.id = 1;
+
+SELECT t.title
+from post p
+INNER JOIN post_tag pt ON p.id = pt.postId
+INNER JOIN tag t ON pt.tagId = t.id
+WHERE p.slug = 'slug-test';
+
+SELECT p.*, GROUP_CONCAT(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ')
+FROM post p
+INNER JOIN post_category pc on p.id = pc.postId
+INNER JOIN category c on pc.categoryId = c.id
+GROUP BY p.id, p.title, p.content;
+
+#$// posts with the categories
+SELECT p.*, GROUP_CONCAT(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ') AS categories FROM post p INNER JOIN post_category pc on p.id = pc.postId INNER JOIN category c on pc categoryId = c.id GROUP BY p.id, p.title, p.content ;
+
+
+SELECT p.*, 
+GROUP_CONCAT(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ') AS categories ,
+GROUP_CONCAT(DISTINCT t.title ORDER BY t.title DESC SEPARATOR ', ') AS tags 
+FROM post p 
+INNER JOIN post_category pc on p.id = pc.postId INNER JOIN category c on pc.categoryId = c.id 
+INNER JOIN post_tag pt ON p.id = pt.postId INNER JOIN tag t ON pt.tagId = t.id 
+GROUP BY p.id, p.title, p.content ;
+
+SELECT p.*, GROUP_CONCAT( DISTINCT CONCAT(m.key, ',',m.content) ORDER BY p.id SEPARATOR ';') FROM post p INNER JOIN post_metadata m ON m.postId = p.id  WHERE p.slug = 'slug-test' ;
+
+SELECT p.*, GROUP_CONCAT(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ') AS categories ,GROUP_CONCAT(DISTINCT t.title ORDER BY t.title DESC SEPARATOR ', ') AS tags, GROUP_CONCAT( DISTINCT CONCAT(m.key, ',',m.content) ORDER BY p.id SEPARATOR ';') FROM post p INNER JOIN post_metadata m ON m.postId = p.id INNER JOIN post_category pc on p.id = pc.postId INNER JOIN category c on pc.categoryId = c.id INNER JOIN post_tag pt ON p.id = pt.postId INNER JOIN tag t ON pt.tagId = t.id WHERE p.slug = ? ;
+
+GROUP_CONCAT(
+    DISTINCT CONCAT(m.key, ',',m.content)
+    ORDER BY p.id SEPARATOR ';'
+)
+
+#$// get post with categories, tags
+SELECT p.*, GROUP_CONCAT(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ') AS categories ,GROUP_CONCAT(DISTINCT t.title ORDER BY t.title DESC SEPARATOR ', ') AS tags FROM post p INNER JOIN post_category pc on p.id = pc.postId INNER JOIN category c on pc.categoryId = c.id INNER JOIN post_tag pt ON p.id = pt.postId INNER JOIN tag t ON pt.tagId = t.id WHERE p.slug = 'slug-test' ;
+
+SELECT c.title as "categories of the given post"
+from post p
+INNER JOIN post_category pc ON p.id = pc.postId
+INNER JOIN category c ON pc.categoryId = c.id
+WHERE p.id = 5;
+
+
+#// get posts BY given tag 
+SELECT p.id, p.title, t.id, t.title
+from tag t
+INNER JOIN post_tag pt ON t.id = pt.tagId
+INNER JOIN post p ON pt.postId = p.id
+WHERE t.title = 'test tag 2'
+ORDER BY p.createdAt
+LIMIT 2 OFFSET 1;
+
+SELECT p.id, p.title, t.id, t.title FROM tag t INNER JOIN post_tag pt ON t.id = pt.tagId INNER JOIN post p ON pt.postId = p.id WHERE t.title = 'test tag 2' ORDER BY p.createdAt LIMIT 2 OFFSET 1;
+
+// number of posts having given tag
+SELECT COUNT(p.id) as 'total' FROM tag t INNER JOIN post_tag pt ON t.id = pt.tagId INNER JOIN post p ON pt.postId = p.id WHERE t.title = 'test tag 2';
+
+
+#// get posts BY given category
+SELECT p.id, p.title, c.id, c.title
+from category c
+INNER JOIN post_category pc ON c.id = pc.categoryId
+INNER JOIN post p ON pc.postId = p.id
+WHERE c.title = 'test'
+ORDER BY p.createdAt
+LIMIT 2 OFFSET 1;
+
+SELECT p.id, p.title, c.id, c.title FROM category c INNER JOIN post_category pc ON c.id = pc.categoryId INNER JOIN post p ON pc.postId = p.id WHERE c.title = 'test' ORDER BY p.createdAt LIMIT 2 OFFSET 1;
+
+// number of posts having given category
+SELECT COUNT(p.id) as 'total' FROM category c INNER JOIN post_category pc ON c.id = pc.categoryId INNER JOIN post p ON pc.postId = p.id WHERE c.title = 'test';

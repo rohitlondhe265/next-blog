@@ -1,0 +1,19 @@
+insert into user(`email`, `hashedPassword`) values ('test@gmail.com', 'test');
+
+insert into post(`title`, `content`, `slug`, `status`) values ('the test title ', 'test content ', 'slug test ', 1);
+
+ mysql> SET GLOBAL FOREIGN_KEY_CHECKS=0;
+ mysql> SET GLOBAL FOREIGN_KEY_CHECKS=0;
+ Query OK, 0 rows affected (0.10 sec)
+
+ insert into post(`title`, `content`, `slug`, `status`, `parentId`) values ('the test title 1', 'test content 1', 'slug test 1', 1, 1);
+
+ mysql> update post set parentId=15 where id=16;
+ Query OK, 1 row affected (0.11 sec)
+
+insert into category(`title`, `slug`) values ('test', 'test slug');
+insert into tag(`title`) values ('test tag');
+insert into post_comment(`content`, `postId`) values ('test comment', 1);
+insert into post_metaData(`key`, `postId`, `content`) values ('test key', 1, 'test content');
+insert into post_category(`categoryId`, `postId`) values (2, 5);
+insert into post_tag(`tagId`, `postId`) values (1, 3);
