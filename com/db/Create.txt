@@ -34,21 +34,21 @@ CREATE TABLE `rdl-blog`.`post` (
     FOREIGN KEY (`parentId`)
     REFERENCES `rdl-blog`.`post` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON UPDATE CASCADE );
 
-CREATE TABLE `rdl-blog`.`post_metaData` (
+CREATE TABLE `rdl-blog`.`post_meta` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `postId` INT UNSIGNED NOT NULL,
-  `key` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
   `content` VARCHAR(600) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `idx_post_metaData` (`postId` ASC),
-  UNIQUE INDEX `uq_post_metaData` (`postId` ASC, `key` ASC),
+  INDEX `idx_post_meta` (`postId` ASC),
+  UNIQUE INDEX `uq_post_meta` (`postId` ASC, `name` ASC),
   CONSTRAINT `fk_metaData`
     FOREIGN KEY (`postId`)
     REFERENCES `rdl-blog`.`post` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
 
 CREATE TABLE `rdl-blog`.`post_comment` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -62,18 +62,18 @@ CREATE TABLE `rdl-blog`.`post_comment` (
   CONSTRAINT `fk_comment_post`
     FOREIGN KEY (`postId`)
     REFERENCES `rdl-blog`.`post` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_user`
     FOREIGN KEY (`userId`)
     REFERENCES `rdl-blog`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_comment_parent`
     FOREIGN KEY (`parentId`)
     REFERENCES `rdl-blog`.`post_comment` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
 
 CREATE TABLE `rdl-blog`.`category` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -88,7 +88,7 @@ CREATE TABLE `rdl-blog`.`category` (
     FOREIGN KEY (`parentCategoryId`)
     REFERENCES `rdl-blog`.`category` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON UPDATE CASCADE );
 
 CREATE TABLE `rdl-blog`.`post_category` (
   `postId` INT UNSIGNED NOT NULL,
@@ -99,13 +99,13 @@ CREATE TABLE `rdl-blog`.`post_category` (
   CONSTRAINT `fk_pc_post`
     FOREIGN KEY (`postId`)
     REFERENCES `rdl-blog`.`post` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pc_category`
     FOREIGN KEY (`categoryId`)
     REFERENCES `rdl-blog`.`category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
 
 CREATE TABLE `rdl-blog`.`tag` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -123,10 +123,10 @@ CREATE TABLE `rdl-blog`.`post_tag` (
   CONSTRAINT `fk_pt_post`
     FOREIGN KEY (`postId`)
     REFERENCES `rdl-blog`.`post` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_pt_tag`
     FOREIGN KEY (`tagId`)
     REFERENCES `rdl-blog`.`tag` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION );
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );

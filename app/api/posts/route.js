@@ -23,15 +23,3 @@ export async function GET(req) {
         return NextResponse.json(error);
     }
 }
-
-export async function POST(request) {
-    return NextResponse.json({ msg: "post req is working", request })
-}
-
-export async function PUT(request) {
-    return NextResponse.json({ msg: "Put req is working" });
-}
-
-export async function DELETE(request) {
-    return NextResponse.json({ msg: "Delete req is working" })
-}
