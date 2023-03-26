@@ -1,0 +1,138 @@
+CREATE SCHEMA `blog_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE `blog_db`;
+
+CREATE TABLE `blog_db`.`user` (
+  `id` VARCHAR(300) NOT NULL,
+  `email` VARCHAR(75) NOT NULL,
+  `hashed_password` VARCHAR(90) NOT NULL,
+  `role` ENUM ('User', 'Teacher', 'Admin') DEFAULT 'User',
+  `first_name` VARCHAR(30) NULL DEFAULT NULL,
+  `last_name` VARCHAR(30) NULL DEFAULT NULL,
+  `profile` varchar(255) NULL,
+  `mobile` VARCHAR(15) NULL,
+  `registered_at` TIMESTAMP DEFAULT current_timestamp,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_mobile` (`mobile` ASC),
+  UNIQUE INDEX `uq_email` (`email` ASC) );
+
+CREATE TABLE `blog_db`.`post` (
+  `id`  VARCHAR(300) NOT NULL,
+  `title` VARCHAR(75) NOT NULL,
+  `content` TEXT NOT NULL,
+  `status` ENUM ('Draft', 'Public', 'Private') DEFAULT 'Draft',
+  `thumbnail` VARCHAR(255) NULL,
+  `meta_title` VARCHAR(100) NULL,
+  `slug` VARCHAR(100) NULL,
+  `created_at` timestamp default current_timestamp,
+  `updated_at` datetime default current_timestamp on update current_timestamp,
+  `parent_id` VARCHAR(300) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `uq_slug` (`slug` ASC),
+  INDEX `idx_post_parent` (`parent_id` ASC),
+  CONSTRAINT `fk_post_parent`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `blog_db`.`post` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE );
+
+CREATE TABLE `blog_db`.`post_meta` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `post_id` VARCHAR(300) NOT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `content` VARCHAR(600) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_post_meta` (`post_id` ASC),
+  UNIQUE INDEX `uq_post_meta` (`post_id` ASC, `name` ASC),
+  CONSTRAINT `fk_metaData`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `blog_db`.`post` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
+
+CREATE TABLE `blog_db`.`post_comment` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `post_id` VARCHAR(300) NOT NULL,
+  `user_id` VARCHAR(300) NOT NULL,
+  `parent_id` INT UNSIGNED NULL DEFAULT NULL,
+  `content` VARCHAR(600) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_comment_post` (`post_id` ASC),
+  INDEX `idx_comment_parent` (`parent_id` ASC),
+  CONSTRAINT `fk_comment_post`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `blog_db`.`post` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_comment_user`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `blog_db`.`user` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_comment_parent`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `blog_db`.`post_comment` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
+
+CREATE TABLE `blog_db`.`category` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `parent_id` INT UNSIGNED NULL DEFAULT NULL,
+  `title` VARCHAR(90) NOT NULL,
+  `meta_title` VARCHAR(120) NULL DEFAULT NULL,
+  `description` VARCHAR(300) NULL DEFAULT NULL,
+  `slug` VARCHAR(90) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `idx_category_parent` (`parent_id` ASC),
+  INDEX `idx_category_title` (`title` ASC),
+  CONSTRAINT `fk_category_parent`
+    FOREIGN KEY (`parent_id`)
+    REFERENCES `blog_db`.`category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE );
+
+CREATE TABLE `blog_db`.`post_category` (
+  `post_id` VARCHAR(300) NOT NULL,
+  `category_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`post_id`, `category_id`),
+  INDEX `idx_pc_category` (`category_id` ASC),
+  INDEX `idx_pc_post` (`post_id` ASC),
+  CONSTRAINT `fk_pc_post`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `blog_db`.`post` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pc_category`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `blog_db`.`category` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
+
+CREATE TABLE `blog_db`.`tag` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(90) NOT NULL,
+  `meta_title` VARCHAR(90) NULL DEFAULT NULL,
+  `description` VARCHAR(270) NULL DEFAULT NULL,
+  `slug` VARCHAR(90) NOT NULL,
+  PRIMARY KEY (`id`) );
+
+CREATE TABLE `blog_db`.`post_tag` (
+  `post_id` VARCHAR(300) NOT NULL,
+  `tag_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`post_id`, `tag_id`),
+  INDEX `idx_pt_tag` (`tag_id` ASC),
+  INDEX `idx_pt_post` (`post_id` ASC),
+  CONSTRAINT `fk_pt_post`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `blog_db`.`post` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_pt_tag`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `blog_db`.`tag` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE );
+
+SET FOREIGN_KEY_CHECKS=0;
+
+SHOW TABLES;

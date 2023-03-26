@@ -1,0 +1,22 @@
+
+npm install -D @tailwindcss/typography
+
+insert into user(`id`, `email`, `hashed_password`) values ('random_id', 'test@gmail.com', 'test');
+
+insert into post(`id`, `title`, `content`, `slug`, `status`) values ('random_id', 'the test title ', 'test content ', 'test-slug', 1);
+
+ mysql> SET GLOBAL FOREIGN_KEY_CHECKS=0;
+ mysql> SET FOREIGN_KEY_CHECKS=0;
+ Query OK, 0 rows affected (0.10 sec)
+
+insert into post(`id`, `title`, `content`, `slug`, `status`, `parent_id`) values ('random_id_1', 'the test title 1', 'test content 1', 'test-slug-2', 1, 1);
+
+ mysql> update post set parent_id=1 where id=2;
+ Query OK, 1 row affected (0.11 sec)
+
+insert into category (`title`) values ('test');
+insert into tag (`title`) values ('test tag');
+insert into post_comment (`content`, `post_id`) values ('test comment', 'random_id');
+insert into post_meta (name, post_id, content) values ('test key', 'random_id', 'test content');
+insert into post_category(`category_id`, `post_id`) values (1, 'random_id');
+insert into post_tag(`tag_id`, `post_id`) values (1, 'random_id');

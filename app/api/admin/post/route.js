@@ -1,0 +1,69 @@
+import { NextResponse } from "next/server";
+import excuteQuery from "@/lib/db";
+import { nanoid } from "nanoid";
+
+export async function POST(request) {
+    const body = await request.json();
+    const { title, content, status, thumbnail, meta_title, slug, categories, tags, metadata } = body;
+
+    const id = nanoid();
+
+    try {
+        const post_result = await excuteQuery({
+            query: `INSERT INTO post (title, content, status, thumbnail, meta_title, slug) VALUES (?, ?, ?, ?, ?, ?)`,
+            values: [title, content, status, thumbnail, meta_title, slug]
+        });
+
+        const tagsArr = [tags.map(tag => [id, tag])];
+        const catsArr = [categories.map(cat => [id, cat])];
+        const metaArr = [metadata.map(data => [id, data.name, data.content])];
+
+        const meta_result = await excuteQuery({
+            query: `INSERT INTO post_meta (post_id, name, content) VALUES ?`,
+            values: metaArr
+        });
+        const tag_result = await excuteQuery({
+            query: `INSERT INTO post_tag (post_id, tag_id) VALUES ?`,
+            values: tagsArr
+        });
+        const cat_result = await excuteQuery({
+            query: `INSERT INTO post_category (post_id, category_id) VALUES ?`,
+            values: catsArr
+        });
+
+        return NextResponse.json({ post: post_result, cat: cat_result, tag: tag_result, meta: meta_result });
+
+    } catch (error) {
+        return NextResponse.json(error);
+    }
+}
+
+export async function PUT(request) {
+    const body = await request.json();
+    const { id, title, content, status, thumbnail, meta_title, slug} = body;
+
+    try {
+        const result = await excuteQuery({
+            query: `UPDATE post SET (title, content, status, thumbnail, meta_title, slug) VALUES (?, ?, ?, ?, ?, ?)`,
+            values: [title, content, status, thumbnail, meta_title, slug]
+        });
+
+        return NextResponse.json(result);
+
+    } catch (error) {
+        return NextResponse.json(error);
+    }
+}
+
+export async function DELETE(request) {
+    const id = request.json().id;
+    try {
+        const result = await excuteQuery({
+            query: "DELETE FROM post WHERE id = ?",
+            values: [id]
+        });
+        return NextResponse.json(result);
+    } catch (error) {
+        return NextResponse.json(error);
+    }
+}
