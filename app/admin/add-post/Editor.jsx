@@ -3,19 +3,20 @@
 import React, { useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-export default function App() {
+export default function App({ setDesc }) {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
-      console.log(editorRef.current.getContent());
+      setDesc(editorRef.current.getContent());
     }
   };
   return (
-    <>
+    <section>
+      <div className="editor h-1/2 overflow-scroll bg-white">
       <Editor
         apiKey="idw7xyxfre7k97232m8itu8o6z8mtog3ehj5vk8qax5gn33t"
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>This is the initial content of the editor.</p>"
+        initialValue=""
         init={{
           height: 500,
           menubar: false,
@@ -27,7 +28,9 @@ export default function App() {
             "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         }}
       />
-      <button onClick={log}>Log editor content</button>
-    </>
+      </div>
+
+      <button onClick={log} className="btn mt-2 btn-info items-center">Set Description</button>
+    </section>
   );
 }
