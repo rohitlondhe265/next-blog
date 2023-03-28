@@ -15,20 +15,31 @@ export default function page() {
   const [file, setFile] = useState(null);
 
   const router = useRouter();
-  const [api, setApi] = useState([]);
+  const [apiCat, setApiCat] = useState([]);
+  const [apiTag, setApiTag] = useState([]);
   const [selectedCats, setSelectedCats] = useState([]);
   const [selectedtags, setSelectedTags] = useState([]);
- 
-  let cats;
-  let tags;
-  useEffect( () => {
-    const catRes = axios.get("/posts/categories");
-    const tagRes = axios.get("/posts/tags");
-    cats = catRes.data;
-    tags = tagRes.data;
+
+
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/posts/categories").then(data => data.json()).then(val => setApiCat(val));
+    fetch("http://localhost:3000/api/posts/tags").then(data => data.json()).then(val => setApiTag(val))
   }, []);
-console.log(cats);
-console.log(tags);
+  console.log(apiCat);
+  console.log(apiTag);
+  const handleChnage = (e, index) => {
+    console.log(e.target.value)
+    const activeData = document.getElementById(index).checked
+    console.log(activeData, "activeData")
+    if (activeData == true) {
+      setSelectedCats(oldData => [...oldData, e.target.value])
+    } else {
+      setSelectedCats(selectedCats.filter(values => values !== e.target.value))
+    }
+
+  }
+
   const upload = async () => {
     try {
       const formData = new FormData();
@@ -145,18 +156,14 @@ console.log(tags);
 
         <div className="form-control">
           <h3>Select Category</h3>
-          <label className="label cursor-pointer w-1/2">
-            <input type="checkbox" checked className="checkbox checkbox-info" />
-            <span className="label-text">Remember me</span>
-          </label>
-          <label className="label cursor-pointer w-1/2">
-            <input type="checkbox" checked className="checkbox checkbox-info" />
-            <span className="label-text">Remember me</span>
-          </label>
-          <label className="label cursor-pointer w-1/2">
-            <input type="checkbox" checked className="checkbox checkbox-info" />
-            <span className="label-text">Remember me</span>
-          </label>
+          {
+            apiCat.map((cat, i) =>
+              <div key={i} className="label cursor-pointer w-1/2">
+                <input id={i} type="checkbox" value={cat.id} onChange={(e) => handleChnage(e, i)} className="checkbox checkbox-info" />
+                <span className="label-text">{cat.title}</span>
+              </div>
+            )
+          }
         </div>
 
         <div className="form-control">
