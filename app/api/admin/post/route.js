@@ -10,13 +10,13 @@ export async function POST(request) {
 
     try {
         const post_result = await excuteQuery({
-            query: `INSERT INTO post (title, content, status, thumbnail, meta_title, slug) VALUES (?, ?, ?, ?, ?, ?)`,
-            values: [title, content, status, thumbnail, meta_title, slug]
+            query: `INSERT INTO post (id, title, content, status, thumbnail, meta_title, slug) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            values: [id, title, content, status, thumbnail, meta_title, slug]
         });
 
-        const tagsArr = [tags.map(tag => [id, tag])];
-        const catsArr = [categories.map(cat => [id, cat])];
-        const metaArr = [metadata.map(data => [id, data.name, data.content])];
+        const tagsArr = [tags.map(tagId => [id, tagId])];
+        const catsArr = [categories.map(catId => [id, catId])];
+        const metaArr = [metadata.map(meta => [id, meta.name, meta.content])];
 
         const meta_result = await excuteQuery({
             query: `INSERT INTO post_meta (post_id, name, content) VALUES ?`,

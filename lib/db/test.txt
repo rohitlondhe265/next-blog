@@ -1,0 +1,18 @@
+ const reqBody = {"title" : "" , "content" : "" , "status" : "" , "thumbnail" : "" , "meta_title" : "" , "slug" : "" , "categories" : [1, 2, 3] , "tags" : [1, 2, 3] , "metadata" : [ { "name" : "title", "content" : "the meta title" }, { "name" : "description", "content" : "the meta desc" } ] }
+
+Request Body to add new post
+
+{
+ "title" : "test axios" , 
+"content" : "test" , 
+"status" : 1 , 
+"thumbnail" : "tes" , 
+"meta_title" : "esea" , 
+"slug" : "test" , 
+"categories" : [1, 2, 3] , 
+"tags" : [1, 2, 3] , 
+"metadata" : [ 
+  { "name" : "title", "content" : "the meta title" }, 
+  { "name" : "description", "content" : "the meta desc" } 
+            ] 
+}

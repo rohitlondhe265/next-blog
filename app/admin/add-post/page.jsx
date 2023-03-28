@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import Editor from "./Editor";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Editor from "./Editor";
+import Link from "next/link";
+import axios from "@/lib/my-axios";
 
 export default function page() {
   const [title, setTitle] = useState("");
@@ -11,10 +13,22 @@ export default function page() {
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [file, setFile] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
 
   const router = useRouter();
+  const [api, setApi] = useState([]);
+  const [selectedCats, setSelectedCats] = useState([]);
+  const [selectedtags, setSelectedTags] = useState([]);
+ 
+  let cats;
+  let tags;
+  useEffect( () => {
+    const catRes = axios.get("/posts/categories");
+    const tagRes = axios.get("/posts/tags");
+    cats = catRes.data;
+    tags = tagRes.data;
+  }, []);
+console.log(cats);
+console.log(tags);
   const upload = async () => {
     try {
       const formData = new FormData();
@@ -28,26 +42,28 @@ export default function page() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const imgUrl = await upload();
     try {
-      state
-        ? await axios.put(`/posts/`, {
-            title,
-            description,
-            category,
-            thumbnail: file ? imgUrl : "",
-          })
-        : await axios.post(`/posts/`, {
-            title,
-            description,
-            category,
-            thumbnail: file ? imgUrl : "",
-          });
-      router.push("/");
+      const res = await axios.post(`/admin/post`, {
+        // title,
+        // content: ,
+        // status: ,
+        // thumbnail: ,
+        // meta_title: ,
+        // slug: ,
+        // categories: ,
+        // tags: ,
+        // metadata: ,
+      });
+      setStatus(res.status);
     } catch (err) {
-      console.log(err);
+      setStatus(404);
+      console.log(err.message);
     }
+    setTimeout(() => {
+      router.push("/admin/stacks/tags");
+    }, 3000);
   };
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-6">
       {/* Content */}
@@ -96,18 +112,18 @@ export default function page() {
         style={{ flex: "2" }}
       >
         <div className="flex justify-between">
-          <button
-            className="bg-blue-500 px-4 py-2 font-semibold text-white text-center cursor-pointer items-center space-x-2 rounded"
-            onClick={handleClick}
-          >
-            Publish
-          </button>
-          <button
-            className="bg-blue-500 px-4 py-2 font-semibold text-white text-center cursor-pointer items-center space-x-2 rounded"
-            onClick={handleClick}
-          >
-            Save as Draft
-          </button>
+          <Link href="/admin/add-post">
+            <button className="btn btn-info gap-2" onClick={handleClick}>
+              <img src="/img/upload.svg" className="w-9" alt="" />
+              Publish
+            </button>
+          </Link>
+          <Link href="/admin/add-post">
+            <button className="btn btn-info gap-2" onClick={handleClick}>
+              <img src="/img/save.svg" className="w-9" alt="" />
+              Save as Draft
+            </button>
+          </Link>
         </div>
 
         {/* 3. post thumbnail */}
@@ -130,27 +146,15 @@ export default function page() {
         <div className="form-control">
           <h3>Select Category</h3>
           <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              checked
-              className="checkbox checkbox-info"
-            />
+            <input type="checkbox" checked className="checkbox checkbox-info" />
             <span className="label-text">Remember me</span>
           </label>
           <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              checked
-              className="checkbox checkbox-info"
-            />
+            <input type="checkbox" checked className="checkbox checkbox-info" />
             <span className="label-text">Remember me</span>
           </label>
           <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              checked
-              className="checkbox checkbox-info"
-            />
+            <input type="checkbox" checked className="checkbox checkbox-info" />
             <span className="label-text">Remember me</span>
           </label>
         </div>
@@ -174,11 +178,7 @@ export default function page() {
             <span className="label-text">Remember me</span>
           </label>
           <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              checked
-              className="checkbox checkbox-info"
-            />
+            <input type="checkbox" checked className="checkbox checkbox-info" />
             <span className="label-text">Remember me</span>
           </label>
         </div>

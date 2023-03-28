@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 function DynamicCheckBox(){
     // http://localhost:4000/fruit
-    const [api,setApi] =useState([])
-    const [selected,setSelected] =useState([])
+    const [api,setApi] =useState([]);
+    const [selectedCats,setSelectedCats] =useState([]);
     useEffect(()=>{
         fetch("http://localhost:4000/fruit").then(data=>data.json()).then(val=>setApi(val))
     },[])
