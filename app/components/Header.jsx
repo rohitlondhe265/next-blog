@@ -1,12 +1,11 @@
 import Link from "next/link";
 
-//https://remixicon.com/
 const Header = () => {
   return (
     <header className="flex flex-col md:flex-row items-center md:px-6 bg-base-200 text-base-content">
 
         <div className="inline-flex items-center font-medium text-gray-900">
-          <img className="w-16" src="/education.png" alt="" />
+          <img className="w-12" src="/site/education.png" alt="" />
           <span className="text-xl">Blog Website</span>
         </div>
 

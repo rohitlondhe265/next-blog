@@ -30,7 +30,7 @@ export default function App({ setDesc }) {
       />
       </div>
 
-      <button onClick={log} className="btn mt-2 btn-info items-center">Set Description</button>
+      <button onClick={log} className="btn mt-2 btn-warning items-center">Set Description</button>
     </section>
   );
 }

@@ -13,7 +13,7 @@ const SideNav = () => {
     <div className="w-72 p-5 pt-8 relative">
       <Link href="/admin/add-post">
       <button className="btn btn-primary gap-2">
-        <img src="/button.png" className="w-9" alt="" />
+        <img src="/site/button.png" className="w-9" alt="" />
         Add New Post
       </button></Link>
       <ul className="pt-6">
@@ -24,7 +24,7 @@ const SideNav = () => {
               className={`flex  rounded-md p-2 cursor-pointer hover:bg-white text-gray-300 text-sm items-center gap-x-4 
   ${menu.gap ? "mt-9" : "mt-2"} hover:bg-gray-300`}
             >
-              <img className="w-9" src={`/img/${menu.src}.svg`} />
+              <img className="w-9" src={`/site/dashbord/${menu.src}.svg`} />
               <span className="origin-left text-lg duration-200 text-black">
                 {menu.title}
               </span>
