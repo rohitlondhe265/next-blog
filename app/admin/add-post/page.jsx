@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Editor from "./Editor";
 import Link from "next/link";
 import axios from "@/lib/my-axios";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const [title, setTitle] = useState("");
@@ -28,7 +28,6 @@ export default function page() {
     }
   };
 
-  const router = useRouter();
   const [apiCat, setApiCat] = useState([]);
   const [apiTag, setApiTag] = useState([]);
   const [selectedCats, setSelectedCats] = useState([]);
@@ -68,6 +67,7 @@ export default function page() {
     { name: "description", content: metaDescription },
   ];
   const [status, setStatus] = useState(0);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,20 +85,39 @@ export default function page() {
         metadata,
       });
       setStatus(res.status);
-      console.log(res.data);
     } catch (err) {
       setStatus(404);
       console.log(err.message);
     }
-    // setTimeout(() => {
-    //   router.push("/admin/stacks/post");
-    // }, 3000);
+    setTimeout(() => {
+      router.push("/admin/stacks/posts");
+    }, 3000);
   };
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-6">
       {/* Content */}
       <main className="px-2 lg:px-9 bg-slate-300" style={{ flex: "5" }}>
+      {status == 200 && (
+        <div className="alert alert-success shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>New Post is Added Successfully!</span>
+          </div>
+        </div>
+      )}
         {status == 404 && (
           <div className="alert alert-error shadow-lg">
             <div>

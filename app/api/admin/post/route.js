@@ -44,8 +44,8 @@ export async function PUT(request) {
 
     try {
         const result = await excuteQuery({
-            query: `UPDATE post SET (title, content, status, thumbnail, meta_title, slug) VALUES (?, ?, ?, ?, ?, ?)`,
-            values: [title, content, status, thumbnail, meta_title, slug]
+            query: `UPDATE post SET title = ?, content = ?, status = ?, thumbnail = ?, meta_title = ?, slug = ? VALUES WHERE id = ?`,
+            values: [title, content, status, thumbnail, meta_title, slug, id]
         });
 
         return NextResponse.json(result);
