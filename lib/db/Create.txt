@@ -3,7 +3,7 @@ CREATE SCHEMA `blog_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 USE `blog_db`;
 
 CREATE TABLE `blog_db`.`user` (
-  `id` VARCHAR(300) NOT NULL,
+  `id` VARCHAR(150) NOT NULL,
   `email` VARCHAR(75) NOT NULL,
   `hashed_password` VARCHAR(90) NOT NULL,
   `role` ENUM ('User', 'Teacher', 'Admin') DEFAULT 'User',
@@ -17,7 +17,7 @@ CREATE TABLE `blog_db`.`user` (
   UNIQUE INDEX `uq_email` (`email` ASC) );
 
 CREATE TABLE `blog_db`.`post` (
-  `id`  VARCHAR(300) NOT NULL,
+  `id`  VARCHAR(150) NOT NULL,
   `title` VARCHAR(75) NOT NULL,
   `content` TEXT NOT NULL,
   `status` ENUM ('Draft', 'Public', 'Private') DEFAULT 'Draft',
@@ -26,7 +26,7 @@ CREATE TABLE `blog_db`.`post` (
   `slug` VARCHAR(100) NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `parent_id` VARCHAR(300) NULL DEFAULT NULL,
+  `parent_id` VARCHAR(150) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_slug` (`slug` ASC),
   INDEX `idx_post_parent` (`parent_id` ASC),
@@ -38,7 +38,7 @@ CREATE TABLE `blog_db`.`post` (
 
 CREATE TABLE `blog_db`.`post_meta` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `post_id` VARCHAR(300) NOT NULL,
+  `post_id` VARCHAR(150) NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `content` VARCHAR(600) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -52,8 +52,8 @@ CREATE TABLE `blog_db`.`post_meta` (
 
 CREATE TABLE `blog_db`.`post_comment` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `post_id` VARCHAR(300) NOT NULL,
-  `user_id` VARCHAR(300) NOT NULL,
+  `post_id` VARCHAR(150) NOT NULL,
+  `user_id` VARCHAR(150) NOT NULL,
   `parent_id` INT UNSIGNED NULL DEFAULT NULL,
   `content` VARCHAR(600) NOT NULL,
   PRIMARY KEY (`id`),
@@ -76,10 +76,10 @@ CREATE TABLE `blog_db`.`post_comment` (
     ON UPDATE CASCADE );
 
 CREATE TABLE `blog_db`.`category` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `parent_id` INT UNSIGNED NULL DEFAULT NULL,
+  `id` VARCHAR(150) NOT NULL,
+  `parent_id` VARCHAR(150) NULL DEFAULT NULL,
   `title` VARCHAR(90) NOT NULL,
-  `meta_title` VARCHAR(120) NULL DEFAULT NULL,
+  `meta_title` VARCHAR(150) NULL DEFAULT NULL,
   `description` VARCHAR(300) NULL DEFAULT NULL,
   `slug` VARCHAR(90) NOT NULL,
   PRIMARY KEY (`id`),
@@ -92,8 +92,8 @@ CREATE TABLE `blog_db`.`category` (
     ON UPDATE CASCADE );
 
 CREATE TABLE `blog_db`.`post_category` (
-  `post_id` VARCHAR(300) NOT NULL,
-  `category_id` INT UNSIGNED NOT NULL,
+  `post_id` VARCHAR(150) NOT NULL,
+  `category_id` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`post_id`, `category_id`),
   INDEX `idx_pc_category` (`category_id` ASC),
   INDEX `idx_pc_post` (`post_id` ASC),
@@ -109,16 +109,16 @@ CREATE TABLE `blog_db`.`post_category` (
     ON UPDATE CASCADE );
 
 CREATE TABLE `blog_db`.`tag` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` VARCHAR(150) NOT NULL,
   `title` VARCHAR(90) NOT NULL,
   `meta_title` VARCHAR(90) NULL DEFAULT NULL,
-  `description` VARCHAR(270) NULL DEFAULT NULL,
+  `description` VARCHAR(300) NULL DEFAULT NULL,
   `slug` VARCHAR(90) NOT NULL,
   PRIMARY KEY (`id`) );
 
 CREATE TABLE `blog_db`.`post_tag` (
-  `post_id` VARCHAR(300) NOT NULL,
-  `tag_id` INT UNSIGNED NOT NULL,
+  `post_id` VARCHAR(150) NOT NULL,
+  `tag_id` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`post_id`, `tag_id`),
   INDEX `idx_pt_tag` (`tag_id` ASC),
   INDEX `idx_pt_post` (`post_id` ASC),

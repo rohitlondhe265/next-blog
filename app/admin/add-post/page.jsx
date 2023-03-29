@@ -20,24 +20,25 @@ export default function page() {
   const [selectedCats, setSelectedCats] = useState([]);
   const [selectedtags, setSelectedTags] = useState([]);
 
-
-
   useEffect(() => {
     fetch("http://localhost:3000/api/posts/categories").then(data => data.json()).then(val => setApiCat(val));
     fetch("http://localhost:3000/api/posts/tags").then(data => data.json()).then(val => setApiTag(val))
   }, []);
-  console.log(apiCat);
-  console.log(apiTag);
-  const handleChnage = (e, index) => {
-    console.log(e.target.value)
-    const activeData = document.getElementById(index).checked
-    console.log(activeData, "activeData")
+  const handleChangeCats = (e, id) => {
+    const activeData = document.getElementById(id).checked;
     if (activeData == true) {
       setSelectedCats(oldData => [...oldData, e.target.value])
     } else {
       setSelectedCats(selectedCats.filter(values => values !== e.target.value))
     }
-
+  }
+  const handleChangeTags = (e, id) => {
+    const activeData = document.getElementById(id).checked;
+    if (activeData == true) {
+      setSelectedTags(oldData => [...oldData, e.target.value])
+    } else {
+      setSelectedTags(selectedtags.filter(values => values !== e.target.value))
+    }
   }
 
   const upload = async () => {
@@ -157,38 +158,26 @@ export default function page() {
         <div className="form-control">
           <h3>Select Category</h3>
           {
-            apiCat.map((cat, i) =>
-              <div key={i} className="label cursor-pointer w-1/2">
-                <input id={i} type="checkbox" value={cat.id} onChange={(e) => handleChnage(e, i)} className="checkbox checkbox-info" />
+            apiCat.map((cat) =>
+              <div key={cat.id} className="label cursor-pointer w-1/2">
+                <input id={cat.id} type="checkbox" value={cat.id} onChange={(e) => handleChangeCats(e, cat.id)} className="checkbox checkbox-info" />
                 <span className="label-text">{cat.title}</span>
               </div>
             )
           }
         </div>
-
         <div className="form-control">
-          <h3>Select Tag</h3>
-          <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              value="web"
-              className="checkbox checkbox-info"
-            />
-            <span className="label-text">Remember me</span>
-          </label>
-          <label className="label cursor-pointer w-1/2">
-            <input
-              type="checkbox"
-              value="dev"
-              className="checkbox checkbox-info"
-            />
-            <span className="label-text">Remember me</span>
-          </label>
-          <label className="label cursor-pointer w-1/2">
-            <input type="checkbox" checked className="checkbox checkbox-info" />
-            <span className="label-text">Remember me</span>
-          </label>
+          <h3>Select Tags</h3>
+          {
+            apiTag.map((tag) =>
+              <div key={tag.id} className="label cursor-pointer w-1/2">
+                <input id={tag.id} type="checkbox" value={tag.id} onChange={(e) => handleChangeTags(e, tag.id)} className="checkbox checkbox-info" />
+                <span className="label-text">{tag.title}</span>
+              </div>
+            )
+          }
         </div>
+
       </aside>
     </div>
   );

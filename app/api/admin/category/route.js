@@ -1,15 +1,16 @@
 import excuteQuery from "@/lib/db";
+import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
 
     const body = await request.json();
     const { title, description, meta_title, slug } = body;
-
+    const id = nanoid();
     try {
         const result = await excuteQuery({
-            query: `INSERT INTO category (title, description, meta_title, slug) VALUES (?, ?, ?, ?)`,
-            values: [title, description, meta_title, slug]
+            query: `INSERT INTO category (id, title, description, meta_title, slug) VALUES (?, ?, ?, ?, ?)`,
+            values: [id, title, description, meta_title, slug]
         });
         return NextResponse.json(result);
     } catch (error) {
