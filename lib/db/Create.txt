@@ -4,13 +4,13 @@ USE `blog_db`;
 
 CREATE TABLE `blog_db`.`user` (
   `id` VARCHAR(150) NOT NULL,
-  `email` VARCHAR(75) NOT NULL,
-  `hashed_password` VARCHAR(90) NOT NULL,
+  `email` VARCHAR(90) NOT NULL,
+  `hashed_password` VARCHAR(150) NOT NULL,
   `role` ENUM ('User', 'Teacher', 'Admin') DEFAULT 'User',
   `first_name` VARCHAR(30) NULL DEFAULT NULL,
   `last_name` VARCHAR(30) NULL DEFAULT NULL,
   `profile` varchar(255) NULL,
-  `mobile` VARCHAR(15) NULL,
+  `mobile` VARCHAR(30) NULL,
   `registered_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_mobile` (`mobile` ASC),
@@ -18,12 +18,12 @@ CREATE TABLE `blog_db`.`user` (
 
 CREATE TABLE `blog_db`.`post` (
   `id`  VARCHAR(150) NOT NULL,
-  `title` VARCHAR(75) NOT NULL,
+  `title` VARCHAR(300) NOT NULL,
   `content` TEXT NOT NULL,
   `status` ENUM ('Draft', 'Public', 'Private') DEFAULT 'Draft',
-  `thumbnail` VARCHAR(255) NULL,
-  `meta_title` VARCHAR(100) NULL,
-  `slug` VARCHAR(100) NULL,
+  `thumbnail` VARCHAR(300) NULL,
+  `meta_title` VARCHAR(300) NULL,
+  `slug` VARCHAR(120) NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `parent_id` VARCHAR(150) NULL DEFAULT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `blog_db`.`post` (
 CREATE TABLE `blog_db`.`post_meta` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `post_id` VARCHAR(150) NOT NULL,
-  `name` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(60) NOT NULL,
   `content` VARCHAR(600) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `idx_post_meta` (`post_id` ASC),
@@ -78,7 +78,7 @@ CREATE TABLE `blog_db`.`post_comment` (
 CREATE TABLE `blog_db`.`category` (
   `id` VARCHAR(150) NOT NULL,
   `parent_id` VARCHAR(150) NULL DEFAULT NULL,
-  `title` VARCHAR(90) NOT NULL,
+  `title` VARCHAR(120) NOT NULL,
   `meta_title` VARCHAR(150) NULL DEFAULT NULL,
   `description` VARCHAR(300) NULL DEFAULT NULL,
   `slug` VARCHAR(90) NOT NULL,

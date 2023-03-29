@@ -44,8 +44,8 @@ export default function Page() {
                 <tr key={id}>
                   <th>{i+1}</th>
                   <td>{title}</td>
-                  <td>{meta_title}</td>
-                  <td>{description}</td>
+                  <td>{meta_title.slice(0, 30)}</td>
+                  <td>{description.slice(0, 30)}</td>
                   <td>{slug}</td>
                   <td>
                     <Link href={`admin/stacks/categories/edit/${id}`}>

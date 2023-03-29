@@ -29,15 +29,15 @@ export default function Page() {
         </thead>
         <tbody>
           {posts.map((post, i) =>{
-            const {id, title, category, tag, status, published_at} = post;
+            const {id, title, category, tag, status, created_at} = post;
             return (
             <tr key={id}>
-              <th>{i}</th>
-              <td>{title}</td>
+              <th>{i+1}</th>
+              <td>{title.slice(0, 45)}</td>
               <td>{category}</td>
               <td>{tag}</td>
               <td>{status}</td>
-              <td>{published_at}</td>
+              <td>{created_at}</td>
               <td>
                 <Link href={`admin/stacks/posts/edit/${id}`}>
                   <img

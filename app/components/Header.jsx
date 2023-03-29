@@ -6,7 +6,7 @@ const Header = () => {
 
         <div className="inline-flex items-center font-medium text-gray-900">
           <img className="w-12" src="/site/education.png" alt="" />
-          <span className="text-xl">Blog Website</span>
+          <Link href="/"><span className="text-xl">Blog Website</span></Link>
         </div>
 
       <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center md:text-lg justify-center space-x-3 md:space-x-6 bg-info md:bg-inherit font-bold text-white md:text-gray-500 rounded-xl px-2 py-1">

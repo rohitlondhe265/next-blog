@@ -79,7 +79,7 @@ export default function page() {
         status: 2,
         thumbnail: imgUrl,
         meta_title: metaTitle,
-        slug,
+        slug: slug.replace(/\s+/g, "-").toLowerCase(),
         categories: selectedCats,
         tags: selectedtags,
         metadata,

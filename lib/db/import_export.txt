@@ -1,0 +1,12 @@
+$ mysqldump -u root -p blog > C:\Users\Admin\Desktop\Projects\Full-Stack-Blog-Website\blog.sql
+
+mysqldump -u root -p blog_db > blog_db.sql
+
+
+mysql> CREATE SCHEMA `blog_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+mysql> USE blog_db;  
+mysql> SHOW TABLES; 
+
+$ mysql -u root -p mytestdb_copy < D:\BackupFile\testdb.sql  
+
+mysql -u root -p blog_db < blog_db.sql  
