@@ -9,7 +9,7 @@ export default async function Page({ blog }) {
 
             <img className='w-full p-3 lg:p-6 aspect-video' src={`/images/${thumbnail}`} alt="poster image" />
 
-            <article class="prose max-w-none text-justify lg:px-12">
+            <article className="prose max-w-none text-justify lg:px-12">
                 <h1>{title}</h1>
                 <main dangerouslySetInnerHTML={createMarkup(content)}></main>
             </article>

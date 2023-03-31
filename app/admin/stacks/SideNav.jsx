@@ -18,7 +18,7 @@ const SideNav = () => {
       </button></Link>
       <ul className="pt-6">
         {Menus.map((menu, index) => (
-          <Link href={`${menu.href}`}>
+          <Link href={`${menu.href}`} key={menu.id} >
             <li
               key={index}
               className={`flex  rounded-md p-2 cursor-pointer hover:bg-white text-gray-300 text-sm items-center gap-x-4 

@@ -12,7 +12,7 @@ export default function Home() {
       </div>
 
       <div className="divider"></div>
-      <Card blogs={blogs} />
+      <Card />
     </main>
   );
 }

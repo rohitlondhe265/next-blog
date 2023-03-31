@@ -29,13 +29,13 @@ export default function Page() {
         </thead>
         <tbody>
           {posts.map((post, i) =>{
-            const {id, title, category, tag, status, created_at} = post;
+            const {id, title, categories, tags, status, created_at} = post;
             return (
             <tr key={id}>
               <th>{i+1}</th>
               <td>{title.slice(0, 45)}</td>
-              <td>{category}</td>
-              <td>{tag}</td>
+              <td>{categories}</td>
+              <td>{tags}</td>
               <td>{status}</td>
               <td>{created_at}</td>
               <td>
