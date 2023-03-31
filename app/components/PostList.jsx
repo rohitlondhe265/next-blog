@@ -1,9 +1,9 @@
-import { fetctBlogs } from "@/lib/fetchers";
+import { fetchBlogs } from "@/lib/fetchers";
 import Link from "next/link";
 
 export default async function Footer() {
 
-  const { data } = await fetctBlogs();
+  const { data } = await fetchBlogs();
 
   return (
     <section className="text-gray-600 body-font overflow-hidden mx-3 md:w-1/3">

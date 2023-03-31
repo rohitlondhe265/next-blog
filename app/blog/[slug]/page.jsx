@@ -1,20 +1,19 @@
-import { fetctSingleBlog, fetctBlogs } from "@/lib/fetchers";
+import { fetchSingleBlog, fetchBlogs } from "@/lib/fetchers";
+import { notFound } from "next/navigation";
 import Content from "./Content"
 import Sidebar from "./Sidebar"
 
 export const dynamicParams = true;
 
-// dynamic meta data
 export async function generateMetadata({ params: { slug } }) {
-  const blog = await fetctSingleBlog(slug);
+  const blog = await fetchSingleBlog(slug);
   return {
     title: blog.title,
   }
 }
 
-// page to render
 export default async function Page({ params: { slug } }) {
-  const blog = await fetctSingleBlog(slug);
+  const blog = await fetchSingleBlog(slug);
 
   if (!blog.title) {
     return notFound();
@@ -28,13 +27,8 @@ export default async function Page({ params: { slug } }) {
   )
 }
 
-// return blogs.data.map(blog => ({
-//   slug: blog.slug.replace(/\s+/g, "-").toLowerCase()
-// }))
-
-// generate static paths
 export async function generateStaticParams() {
-  const blogs = await fetctBlogs();
+  const blogs = await fetchBlogs();
   return blogs.data.map((blog) => ({
     slug: blog.slug,
   }));
